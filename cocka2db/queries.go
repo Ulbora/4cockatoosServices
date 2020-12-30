@@ -51,4 +51,16 @@ const (
 		" WHERE note_id = ? "
 
 	deleteCheckboxNoteItem = "DELETE FROM checkbox_note_item WHERE id = ? "
+
+	insertNoteItem = "INSERT into note_item(text, note_id) " +
+		" values(?,?)"
+
+	updateNoteItem = " UPDATE note_item SET text = ? " +
+		" WHERE id = ?"
+
+	getNoteItemList = "SELECT id, text, note_id " +
+		" FROM note_item " +
+		" WHERE note_id = ? "
+
+	deleteNoteItem = "DELETE FROM note_item WHERE id = ? "
 )

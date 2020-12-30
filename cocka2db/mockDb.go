@@ -33,6 +33,33 @@ type MockC2DB struct {
 	MockUpdateUserSuc bool
 	MockUser          *User
 	MockDeleteUserSuc bool
+
+	MockAddNoteSuc    bool
+	MockAddNoteID     int64
+	MockUpdateNoteSuc bool
+	MockNote          *Note
+	MockNoteList      *[]Note
+	MockDeleteNoteSuc bool
+
+	MockAddNoteItemSuc    bool
+	MockNoteItemID        int64
+	MockUpdateNoteItemSuc bool
+	MockNoteItemList      *[]NoteItem
+	MockDeleteNoteItemSuc bool
+
+	MockAddCheckboxNoteItemSuc    bool
+	MockCheckboxNoteItemID        int64
+	MockUpdateCheckboxNoteItemSuc bool
+	MockCheckboxNoteItemList      *[]CheckboxNoteItem
+	MockDeleteCheckboxNoteItemSuc bool
+
+	MockAddNoteUserSuc    bool
+	MockDeleteNoteUserSuc bool
+}
+
+//GetNew GetNew
+func (c *MockC2DB) GetNew() NotesDB {
+	return c
 }
 
 //AddUser AddUser
@@ -53,4 +80,79 @@ func (c *MockC2DB) GetUser(email string) *User {
 //DeleteUser DeleteUser
 func (c *MockC2DB) DeleteUser(email string) bool {
 	return c.MockDeleteUserSuc
+}
+
+//AddNote AddNote
+func (c *MockC2DB) AddNote(n *Note) (bool, int64) {
+	return c.MockAddNoteSuc, c.MockAddNoteID
+}
+
+//UpdateNote UpdateNote
+func (c *MockC2DB) UpdateNote(n *Note) bool {
+	return c.MockUpdateNoteSuc
+}
+
+//GetNote GetNote
+func (c *MockC2DB) GetNote(id int64) *Note {
+	return c.MockNote
+}
+
+//GetUsersNotes GetUsersNotes
+func (c *MockC2DB) GetUsersNotes(email string) *[]Note {
+	return c.MockNoteList
+}
+
+//DeleteNote DeleteNote
+func (c *MockC2DB) DeleteNote(id int64) bool {
+	return c.MockDeleteNoteSuc
+}
+
+//AddNoteItem AddNoteItem
+func (c *MockC2DB) AddNoteItem(ni *NoteItem) (bool, int64) {
+	return c.MockAddNoteItemSuc, c.MockNoteItemID
+}
+
+//UpdateNoteItem UpdateNoteItem
+func (c *MockC2DB) UpdateNoteItem(ni *NoteItem) bool {
+	return c.MockUpdateNoteItemSuc
+}
+
+//GetNoteItemList GetNoteItemList
+func (c *MockC2DB) GetNoteItemList(noteID int64) *[]NoteItem {
+	return c.MockNoteItemList
+}
+
+//DeleteNoteItem DeleteNoteItem
+func (c *MockC2DB) DeleteNoteItem(id int64) bool {
+	return c.MockDeleteNoteItemSuc
+}
+
+//AddCheckboxItem AddCheckboxItem
+func (c *MockC2DB) AddCheckboxItem(ni *CheckboxNoteItem) (bool, int64) {
+	return c.MockAddCheckboxNoteItemSuc, c.MockCheckboxNoteItemID
+}
+
+//UpdateCheckboxItem UpdateCheckboxItem
+func (c *MockC2DB) UpdateCheckboxItem(ni *CheckboxNoteItem) bool {
+	return c.MockUpdateCheckboxNoteItemSuc
+}
+
+//GetCheckboxItemList GetCheckboxItemList
+func (c *MockC2DB) GetCheckboxItemList(noteID int64) *[]CheckboxNoteItem {
+	return c.MockCheckboxNoteItemList
+}
+
+//DeleteCheckboxItem DeleteCheckboxItem
+func (c *MockC2DB) DeleteCheckboxItem(id int64) bool {
+	return c.MockDeleteCheckboxNoteItemSuc
+}
+
+//AddNoteUser AddNoteUser
+func (c *MockC2DB) AddNoteUser(nu *NoteUsers) bool {
+	return c.MockAddNoteUserSuc
+}
+
+//DeleteNoteUser DeleteNoteUser
+func (c *MockC2DB) DeleteNoteUser(nu *NoteUsers) bool {
+	return c.MockDeleteNoteUserSuc
 }

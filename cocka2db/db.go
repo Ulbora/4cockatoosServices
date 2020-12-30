@@ -45,11 +45,11 @@ type NotesDB interface {
 	GetCheckboxItemList(noteID int64) *[]CheckboxNoteItem
 	DeleteCheckboxItem(id int64) bool
 
-	// AddNoteItem(ni *NoteItem) (bool, int64)
-	// UpdateNoteItem(ni *NoteItem) bool
+	AddNoteItem(ni *NoteItem) (bool, int64)
+	UpdateNoteItem(ni *NoteItem) bool
 	// //GetNoteItem(id int64) *NoteItem
-	// GetNoteItemList(noteID int64) *[]NoteItem
-	// DeleteNoteItem(id int64) bool
+	GetNoteItemList(noteID int64) *[]NoteItem
+	DeleteNoteItem(id int64) bool
 
 	AddNoteUser(nu *NoteUsers) bool
 	DeleteNoteUser(nu *NoteUsers) bool
