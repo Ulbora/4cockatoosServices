@@ -42,7 +42,7 @@ func TestC2Manager_AddUserToNote(t *testing.T) {
 	nu.NoteID = 4
 
 	res := m.AddUserToNote(&nu)
-	if res.Success {
+	if !res.Success {
 		t.Fail()
 	}
 }

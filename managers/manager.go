@@ -25,6 +25,11 @@ import (
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 )
 
+const (
+	noteTypeCheckbox = "checkbox"
+	notetypeNote     = "note"
+)
+
 //ResponseID ResponseID
 type ResponseID struct {
 	ID      int64  `json:"id"`
@@ -47,6 +52,15 @@ type NoteUsers struct {
 	UserEmail  string `json:"userEmail"`
 }
 
+//Note Note
+type Note struct {
+	ID         int64       `json:"id"`
+	Title      string      `json:"title"`
+	Type       string      `json:"type"`
+	OwnerEmail string      `json:"ownerEmail"`
+	NoteItems  interface{} `json:"noteItems"`
+}
+
 //Manager Manager
 type Manager interface {
 	AddUser(u *db.User) *Response
@@ -56,19 +70,20 @@ type Manager interface {
 
 	AddUserToNote(nu *NoteUsers) *Response
 
+	//add last used date
 	AddNote(n *db.Note) *ResponseID
-	// UpdateNote(n *db.Note) *Response
-	// GetNote(id int64) *db.Note
-	// GetUsersNotes(email string) *[]db.Note
-	// DeleteNote(id int64) *Response
+	UpdateNote(n *db.Note) *Response
+	GetNote(id int64) *Note
+	GetUsersNotes(email string) *[]db.Note
+	DeleteNote(id int64, ownerEmail string) *Response
 
 	// AddCheckboxItem(ni *db.CheckboxNoteItem) *ResponseID
 	// UpdateCheckboxItem(ni *db.CheckboxNoteItem) *Response
-	// GetCheckboxItemList(noteID int64) *[]db.CheckboxNoteItem
+	//// GetCheckboxItemList(noteID int64) *[]db.CheckboxNoteItem
 	// DeleteCheckboxItem(id int64) *Response
 
 	// AddNoteItem(ni *db.NoteItem) *ResponseID
 	// UpdateNoteItem(ni *db.NoteItem) *Response
-	// GetNoteItemList(noteID int64) *[]db.NoteItem
+	//// GetNoteItemList(noteID int64) *[]db.NoteItem
 	// DeleteNoteItem(id int64) *Response
 }
