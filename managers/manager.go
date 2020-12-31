@@ -70,20 +70,19 @@ type Manager interface {
 
 	AddUserToNote(nu *NoteUsers) *Response
 
-	//add last used date
 	AddNote(n *db.Note) *ResponseID
 	UpdateNote(n *db.Note) *Response
 	GetNote(id int64) *Note
 	GetUsersNotes(email string) *[]db.Note
 	DeleteNote(id int64, ownerEmail string) *Response
 
-	// AddCheckboxItem(ni *db.CheckboxNoteItem) *ResponseID
-	// UpdateCheckboxItem(ni *db.CheckboxNoteItem) *Response
+	AddCheckboxItem(ni *db.CheckboxNoteItem) *ResponseID
+	UpdateCheckboxItem(ni *db.CheckboxNoteItem) *Response
 	//// GetCheckboxItemList(noteID int64) *[]db.CheckboxNoteItem
-	// DeleteCheckboxItem(id int64) *Response
+	DeleteCheckboxItem(id int64) *Response
 
-	// AddNoteItem(ni *db.NoteItem) *ResponseID
-	// UpdateNoteItem(ni *db.NoteItem) *Response
+	AddNoteItem(ni *db.NoteItem) *ResponseID
+	UpdateNoteItem(ni *db.NoteItem) *Response
 	//// GetNoteItemList(noteID int64) *[]db.NoteItem
-	// DeleteNoteItem(id int64) *Response
+	DeleteNoteItem(id int64) *Response
 }

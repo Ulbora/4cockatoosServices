@@ -72,7 +72,7 @@ func (c *C2DB) testConnection() bool {
 	var a []interface{}
 	c.Log.Debug("c.DB: ", fmt.Sprintln(c.DB))
 	rowPtr := c.DB.Test(noteTest, a...)
-	c.Log.Debug("rowPtr", *rowPtr)
+	c.Log.Debug("rowPtr", rowPtr)
 	c.Log.Debug("after testConnection test", *rowPtr)
 	if len(rowPtr.Row) != 0 {
 		foundRow := rowPtr.Row

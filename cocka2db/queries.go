@@ -15,17 +15,17 @@ const (
 
 	deleteUser = "DELETE FROM user WHERE email = ? "
 
-	insertNote = "INSERT into note(title, type, owner_email) " +
-		" values(?,?,?)"
+	insertNote = "INSERT into note(title, type, owner_email, last_used) " +
+		" values(?,?,?,?)"
 
-	updateNote = " UPDATE note SET title = ?, type = ? " +
+	updateNote = " UPDATE note SET title = ?, type = ?, last_used = ? " +
 		" WHERE id = ?"
 
-	getNote = "SELECT id, title, type, owner_email " +
+	getNote = "SELECT id, title, type, owner_email, last_used " +
 		" FROM note " +
 		" WHERE id = ? "
 
-	getNoteList = " SELECT n.id, n.title, n.type, n.owner_email " +
+	getNoteList = " SELECT n.id, n.title, n.type, n.owner_email, n.last_used " +
 		" FROM note n " +
 		" inner join note_users nu " +
 		" on n.id = nu.note_id " +

@@ -2,6 +2,7 @@ package cocka2db
 
 import (
 	"strconv"
+	"time"
 )
 
 /*
@@ -29,7 +30,7 @@ func (c *C2DB) AddNote(n *Note) (bool, int64) {
 		c.DB.Connect()
 	}
 	var a []interface{}
-	a = append(a, n.Title, n.Type, n.OwnerEmail)
+	a = append(a, n.Title, n.Type, n.OwnerEmail, time.Now())
 	suc, id := c.DB.Insert(insertNote, a...)
 	c.Log.Debug("suc in add Note", suc)
 	c.Log.Debug("id in add Note", id)
@@ -42,7 +43,7 @@ func (c *C2DB) UpdateNote(n *Note) bool {
 		c.DB.Connect()
 	}
 	var a []interface{}
-	a = append(a, n.Title, n.Type, n.ID)
+	a = append(a, n.Title, n.Type, time.Now(), n.ID)
 	suc := c.DB.Update(updateNote, a...)
 	return suc
 }

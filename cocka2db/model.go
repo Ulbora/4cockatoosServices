@@ -1,5 +1,9 @@
 package cocka2db
 
+import (
+	"time"
+)
+
 /*
  Copyright (C) 2020 Ulbora Labs LLC. (www.ulboralabs.com)
  All rights reserved.
@@ -28,10 +32,11 @@ type User struct {
 
 //Note Note
 type Note struct {
-	ID         int64  `json:"id"`
-	Title      string `json:"title"`
-	Type       string `json:"type"`
-	OwnerEmail string `json:"ownerEmail"`
+	ID         int64     `json:"id"`
+	Title      string    `json:"title"`
+	Type       string    `json:"type"`
+	OwnerEmail string    `json:"ownerEmail"`
+	LastUsed   time.Time `json:"lastUsed"`
 }
 
 //NoteUsers NoteUsers
