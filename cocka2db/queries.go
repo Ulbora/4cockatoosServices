@@ -31,7 +31,8 @@ const (
 		" on n.id = nu.note_id " +
 		" inner join user u " +
 		" on u.email = nu.user_email " +
-		" where nu.user_email = ? "
+		" where nu.user_email = ? " +
+		" order by n.title "
 
 	deleteNote = "DELETE FROM note WHERE id = ? "
 
@@ -48,7 +49,8 @@ const (
 
 	getCheckboxNoteItemList = "SELECT id, text, checked, note_id " +
 		" FROM checkbox_note_item " +
-		" WHERE note_id = ? "
+		" WHERE note_id = ? " +
+		" order by text "
 
 	deleteCheckboxNoteItem = "DELETE FROM checkbox_note_item WHERE id = ? "
 
@@ -60,7 +62,8 @@ const (
 
 	getNoteItemList = "SELECT id, text, note_id " +
 		" FROM note_item " +
-		" WHERE note_id = ? "
+		" WHERE note_id = ? " +
+		" order by text "
 
 	deleteNoteItem = "DELETE FROM note_item WHERE id = ? "
 )
