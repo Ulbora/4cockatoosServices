@@ -130,7 +130,11 @@ func main() {
 	router.HandleFunc("/rs/item/update", h.UpdateNoteItem).Methods("PUT")
 	router.HandleFunc("/rs/item/delete/{id}", h.DeleteNoteItem).Methods("DELETE")
 
+	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
+
 	fmt.Println("Cocka2Services server is running on port " + port + "!")
+
+	l.LogLevel = lg.OffLevel
 
 	http.ListenAndServe(":"+port, router)
 

@@ -45,6 +45,7 @@ type NoteUsers struct {
 	NoteID    int64  `json:"noteId"`
 }
 
+
 //CheckboxNoteItem CheckboxNoteItem
 type CheckboxNoteItem struct {
 	ID      int64  `json:"id"`
