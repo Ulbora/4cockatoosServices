@@ -127,7 +127,7 @@ func TestC2DB_GetNoteRow(t *testing.T) {
 	var dbi ddb.Database = &mydb
 
 	var rtnRow1 ddb.DbRow
-	rtnRow1.Row = []string{"4", "test", "checkbox", "tester2@test.com"}
+	rtnRow1.Row = []string{"4", "test", "checkbox", "tester2@test.com", "2021-01-05T00:00:00Z"}
 	mydb.MockRow1 = &rtnRow1
 
 	var cdb C2DB
@@ -176,8 +176,8 @@ func TestC2DB_GetUsersNotes(t *testing.T) {
 	mydb.MockTestRow = &rtnRow
 
 	var rtnRows ddb.DbRows
-	var r1 = []string{"4", "test", "checkbox", "tester2@test.com"}
-	var r2 = []string{"4", "test", "checkbox", "tester3@test.com"}
+	var r1 = []string{"4", "test", "checkbox", "tester2@test.com", "2021-01-05T00:00:00Z"}
+	var r2 = []string{"4", "test", "checkbox", "tester3@test.com", "2021-01-05T00:00:00Z"}
 	var val [][]string
 	val = append(val, r1)
 	val = append(val, r2)

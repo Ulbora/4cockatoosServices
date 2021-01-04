@@ -97,10 +97,12 @@ func (c *C2DB) parseNoteRow(foundRow *[]string) *Note {
 		id, err := strconv.ParseInt((*foundRow)[0], 10, 64)
 		c.Log.Debug("id err in get note", err)
 		if err == nil {
+			uTime, _ := time.Parse(timeFormat, (*foundRow)[4])
 			rtn.ID = id
 			rtn.Title = (*foundRow)[1]
 			rtn.Type = (*foundRow)[2]
 			rtn.OwnerEmail = (*foundRow)[3]
+			rtn.LastUsed = uTime
 		}
 	}
 	return &rtn
