@@ -31,6 +31,7 @@ type Handler interface {
 	UpdateUser(w http.ResponseWriter, r *http.Request)
 
 	AddUserToNote(w http.ResponseWriter, r *http.Request)
+	GetNoteUserList(w http.ResponseWriter, r *http.Request)
 
 	AddNote(w http.ResponseWriter, r *http.Request)
 	UpdateNote(w http.ResponseWriter, r *http.Request)

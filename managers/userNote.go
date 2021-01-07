@@ -42,3 +42,9 @@ func (m *C2Manager) AddUserToNote(nu *NoteUsers) *Response {
 	}
 	return &rtn
 }
+
+//GetNoteUserList GetNoteUserList
+func (m *C2Manager) GetNoteUserList(noteID int64, ownerEmail string) *[]string {
+	m.Log.Debug("GetNoteUserList: ", ownerEmail)
+	return m.Db.GetNoteUserList(noteID, ownerEmail)
+}

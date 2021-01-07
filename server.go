@@ -115,6 +115,7 @@ func main() {
 	router.HandleFunc("/rs/user/update", h.UpdateUser).Methods("PUT")
 
 	router.HandleFunc("/rs/note/user/add", h.AddUserToNote).Methods("POST")
+	router.HandleFunc("/rs/note/users/{noteId}/{ownerEmail}", h.GetNoteUserList).Methods("GET")
 
 	router.HandleFunc("/rs/note/add", h.AddNote).Methods("POST")
 	router.HandleFunc("/rs/note/update", h.UpdateNote).Methods("PUT")
@@ -134,7 +135,7 @@ func main() {
 
 	fmt.Println("Cocka2Services server is running on port " + port + "!")
 
-	l.LogLevel = lg.OffLevel
+	//l.LogLevel = lg.OffLevel
 
 	http.ListenAndServe(":"+port, router)
 

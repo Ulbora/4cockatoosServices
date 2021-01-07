@@ -53,6 +53,7 @@ type NotesDB interface {
 	UpdateNoteItem(ni *NoteItem) bool
 	// //GetNoteItem(id int64) *NoteItem
 	GetNoteItemList(noteID int64) *[]NoteItem
+	GetNoteUserList(noteID int64, ownerEmail string) *[]string
 	DeleteNoteItem(id int64) bool
 
 	AddNoteUser(nu *NoteUsers) bool

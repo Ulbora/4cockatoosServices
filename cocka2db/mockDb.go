@@ -55,6 +55,7 @@ type MockC2DB struct {
 
 	MockAddNoteUserSuc    bool
 	MockDeleteNoteUserSuc bool
+	MockNoteUserList      *[]string
 }
 
 //GetNew GetNew
@@ -150,6 +151,11 @@ func (c *MockC2DB) DeleteCheckboxItem(id int64) bool {
 //AddNoteUser AddNoteUser
 func (c *MockC2DB) AddNoteUser(nu *NoteUsers) bool {
 	return c.MockAddNoteUserSuc
+}
+
+//GetNoteUserList GetNoteUserList
+func (c *MockC2DB) GetNoteUserList(noteID int64, ownerEmail string) *[]string {
+	return c.MockNoteUserList
 }
 
 //DeleteNoteUser DeleteNoteUser

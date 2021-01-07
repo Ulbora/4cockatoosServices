@@ -39,6 +39,10 @@ const (
 	insertNoteUser = "INSERT into note_users(note_id, user_email) " +
 		" values(?,?)"
 
+	getNoteUserList = "SELECT user_email " +
+		" FROM note_users " +
+		" WHERE note_id = ? and user_email != ? "
+
 	deleteNoteUser = "DELETE FROM note_users WHERE note_id = ? and user_email = ? "
 
 	insertCheckboxNoteItem = "INSERT into checkbox_note_item(text, checked, note_id) " +

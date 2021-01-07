@@ -3,6 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	"strconv"
 
 	m "github.com/Ulbora/cocka2notesServices/managers"
 	"net/http"
@@ -64,5 +66,38 @@ func (h *C2Handler) AddUserToNote(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		resJSON, _ := json.Marshal(uadfl)
 		fmt.Fprint(w, string(resJSON))
+	}
+}
+
+//GetNoteUserList GetNoteUserList
+func (h *C2Handler) GetNoteUserList(w http.ResponseWriter, r *http.Request) {
+	auth := h.processAPIKeySecurity(r)
+	h.Log.Debug("GetNoteUserList authorized: ", auth)
+	h.SetContentType(w)
+	if auth {
+		vars := mux.Vars(r)
+		h.Log.Debug("vars len: ", len(vars))
+		if vars != nil && len(vars) == 2 {
+			h.Log.Debug("vars: ", vars)
+			var idStr = vars["noteId"]
+			noteID, iderr := strconv.ParseInt(idStr, 10, 64)
+			var res *[]string
+			if iderr == nil {
+				var ownerEmail = vars["ownerEmail"]
+				res = h.Manager.GetNoteUserList(noteID, ownerEmail)
+				w.WriteHeader(http.StatusOK)
+			} else {
+				w.WriteHeader(http.StatusBadRequest)
+				var nr []string
+				res = &nr
+			}
+			h.Log.Debug("res: ", res)
+			resJSON, _ := json.Marshal(res)
+			fmt.Fprint(w, string(resJSON))
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusUnauthorized)
 	}
 }

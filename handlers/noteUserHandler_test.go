@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"fmt"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -59,7 +60,6 @@ func TestC2Handler_AddUserToNote(t *testing.T) {
 	}
 }
 
-
 func TestC2Handler_AddUserToNoteMedia(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -105,7 +105,6 @@ func TestC2Handler_AddUserToNoteMedia(t *testing.T) {
 		t.Fail()
 	}
 }
-
 
 func TestC2Handler_AddUserToNoteReq(t *testing.T) {
 	var cdb db.MockC2DB
@@ -153,8 +152,6 @@ func TestC2Handler_AddUserToNoteReq(t *testing.T) {
 	}
 }
 
-
-
 func TestC2Handler_AddUserToNoteAuth(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -201,7 +198,6 @@ func TestC2Handler_AddUserToNoteAuth(t *testing.T) {
 	}
 }
 
-
 func TestC2Handler_AddUserToNoteFail(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -244,6 +240,198 @@ func TestC2Handler_AddUserToNoteFail(t *testing.T) {
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 500 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_GetNoteUserList(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var nlst []string
+	nlst = append(nlst, "test@test.com")
+
+	cdb.MockNoteUserList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"noteId": "3",
+		"email":  "test@test.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetNoteUserList(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+
+func TestC2Handler_GetNoteUserListReq(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var nlst []string
+	nlst = append(nlst, "test@test.com")
+
+	cdb.MockNoteUserList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"noteId": "3c",
+		"email":  "test@test.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetNoteUserList(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 400 {
+		t.Fail()
+	}
+}
+
+
+func TestC2Handler_GetNoteUserListReq2(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var nlst []string
+	nlst = append(nlst, "test@test.com")
+
+	cdb.MockNoteUserList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"noteId": "3",
+		//"email":  "test@test.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetNoteUserList(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 400 {
+		t.Fail()
+	}
+}
+
+
+
+func TestC2Handler_GetNoteUserListAuth(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "1234561"
+	sh.Log = &l
+
+	var nlst []string
+	nlst = append(nlst, "test@test.com")
+
+	cdb.MockNoteUserList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"noteId": "3",
+		"email":  "test@test.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetNoteUserList(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 401 {
 		t.Fail()
 	}
 }

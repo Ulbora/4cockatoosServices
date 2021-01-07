@@ -69,6 +69,7 @@ type Manager interface {
 	// DeleteUser(email string) *Response
 
 	AddUserToNote(nu *NoteUsers) *Response
+	GetNoteUserList(noteID int64, ownerEmail string) *[]string
 
 	AddNote(n *db.Note) *ResponseID
 	UpdateNote(n *db.Note) *Response

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
+	//dbi "github.com/Ulbora/dbinterface"
 )
 
 func TestMockC2DB_AddUser(t *testing.T) {
@@ -302,6 +303,25 @@ func TestMockC2DB_DeleteNoteUser(t *testing.T) {
 	var u NoteUsers
 	suc := i.DeleteNoteUser(&u)
 	if !suc {
+		t.Fail()
+	}
+}
+
+func TestMockC2DB_GetNoteUserList(t *testing.T) {
+	var cdb MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var u CheckboxNoteItem
+	u.Text = "testttt"
+
+	var nilst []string
+	nilst = append(nilst, "test@test.com")
+	cdb.MockNoteUserList = &nilst
+
+	fu := cdb.GetNoteUserList(8, "tet@ts.com")
+	if (*fu)[0] != "test@test.com" {
 		t.Fail()
 	}
 }

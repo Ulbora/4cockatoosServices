@@ -1,11 +1,4 @@
 mode: set
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:37.38,39.2 1 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:41.60,45.16 4 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:49.2,49.17 1 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:45.16,48.3 2 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:53.66,56.16 3 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:59.2,59.12 1 1
-github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:56.16,58.3 1 1
 github.com/Ulbora/cocka2notesServices/managers/checkboxItemManager.go:29.74,33.20 4 1
 github.com/Ulbora/cocka2notesServices/managers/checkboxItemManager.go:37.2,37.13 1 1
 github.com/Ulbora/cocka2notesServices/managers/checkboxItemManager.go:33.20,36.3 2 1
@@ -45,3 +38,11 @@ github.com/Ulbora/cocka2notesServices/managers/userManager.go:56.21,62.4 5 1
 github.com/Ulbora/cocka2notesServices/managers/userNote.go:29.60,35.51 6 1
 github.com/Ulbora/cocka2notesServices/managers/userNote.go:43.2,43.13 1 1
 github.com/Ulbora/cocka2notesServices/managers/userNote.go:35.51,42.3 6 1
+github.com/Ulbora/cocka2notesServices/managers/userNote.go:47.80,50.2 2 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:37.38,39.2 1 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:41.60,45.16 4 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:49.2,49.17 1 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:45.16,48.3 2 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:53.66,56.16 3 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:59.2,59.12 1 1
+github.com/Ulbora/cocka2notesServices/managers/c2Manager.go:56.16,58.3 1 1

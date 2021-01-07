@@ -32,6 +32,26 @@ func (c *C2DB) AddNoteUser(nu *NoteUsers) bool {
 	return suc
 }
 
+//GetNoteUserList GetNoteUserList
+func (c *C2DB) GetNoteUserList(noteID int64, ownerEmail string) *[]string {
+	if !c.testConnection() {
+		c.DB.Connect()
+	}
+	var rtn = []string{}
+	var a []interface{}
+	a = append(a, noteID, ownerEmail)
+	rows := c.DB.GetList(getNoteUserList, a...)
+	if rows != nil && len(rows.Rows) != 0 {
+		foundRows := rows.Rows
+		for r := range foundRows {
+			foundRow := foundRows[r]
+			//rowContent := c.parseNoteRow(&foundRow)
+			rtn = append(rtn, (foundRow)[0])
+		}
+	}
+	return &rtn
+}
+
 //DeleteNoteUser DeleteNoteUser
 func (c *C2DB) DeleteNoteUser(nu *NoteUsers) bool {
 	if !c.testConnection() {
