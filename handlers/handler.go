@@ -29,6 +29,7 @@ import (
 type Handler interface {
 	AddUser(w http.ResponseWriter, r *http.Request)
 	UpdateUser(w http.ResponseWriter, r *http.Request)
+	GetUser(w http.ResponseWriter, r *http.Request)
 
 	AddUserToNote(w http.ResponseWriter, r *http.Request)
 	GetNoteUserList(w http.ResponseWriter, r *http.Request)

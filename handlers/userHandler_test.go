@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"fmt"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -242,7 +243,6 @@ func TestC2Handler_UpdateUser(t *testing.T) {
 	}
 }
 
-
 func TestC2Handler_UpdateUserMedia(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -283,7 +283,6 @@ func TestC2Handler_UpdateUserMedia(t *testing.T) {
 		t.Fail()
 	}
 }
-
 
 func TestC2Handler_UpdateUserReq(t *testing.T) {
 	var cdb db.MockC2DB
@@ -326,7 +325,6 @@ func TestC2Handler_UpdateUserReq(t *testing.T) {
 	}
 }
 
-
 func TestC2Handler_UpdateUserAuth(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -368,7 +366,6 @@ func TestC2Handler_UpdateUserAuth(t *testing.T) {
 	}
 }
 
-
 func TestC2Handler_UpdateUserFail(t *testing.T) {
 	var cdb db.MockC2DB
 	var l lg.Logger
@@ -406,6 +403,181 @@ func TestC2Handler_UpdateUserFail(t *testing.T) {
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 500 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_GetUser(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	fn.Password = "eerrt"
+
+	cdb.MockUser = &fn
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"email": "test@tst.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetUser(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_GetUserReq(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.Note
+	fn.ID = 4
+	fn.Title = "test444"
+	fn.Type = "checkbox"
+	cdb.MockNote = &fn
+
+	var ni1 db.CheckboxNoteItem
+	ni1.ID = 1
+	ni1.Checked = true
+	ni1.NoteID = 4
+	ni1.Text = "test1"
+
+	var ni2 db.CheckboxNoteItem
+	ni2.ID = 1
+	ni2.Checked = true
+	ni2.NoteID = 4
+	ni2.Text = "test1"
+
+	var nlst []db.CheckboxNoteItem
+	nlst = append(nlst, ni1)
+	nlst = append(nlst, ni2)
+	cdb.MockCheckboxNoteItemList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		//"email": "test@tst.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.GetUser(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 400 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_GetUserAuth(t *testing.T) {
+
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.Note
+	fn.ID = 4
+	fn.Title = "test444"
+	fn.Type = "checkbox"
+	cdb.MockNote = &fn
+
+	var ni1 db.CheckboxNoteItem
+	ni1.ID = 1
+	ni1.Checked = true
+	ni1.NoteID = 4
+	ni1.Text = "test1"
+
+	var ni2 db.CheckboxNoteItem
+	ni2.ID = 1
+	ni2.Checked = true
+	ni2.NoteID = 4
+	ni2.Text = "test1"
+
+	var nlst []db.CheckboxNoteItem
+	nlst = append(nlst, ni1)
+	nlst = append(nlst, ni2)
+	cdb.MockCheckboxNoteItemList = &nlst
+
+	//cdb.MockUpdateNoteSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"id": 4, "title":"test", "type": "checkbox", "ownerEmail": "test@test.com"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("GET", "/ffllist", nil)
+	vars := map[string]string{
+		"email": "test@tst.com",
+	}
+	r = mux.SetURLVars(r, vars)
+
+	r.Header.Set("apiKey", "123456a")
+	w := httptest.NewRecorder()
+
+	h.GetUser(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 401 {
 		t.Fail()
 	}
 }

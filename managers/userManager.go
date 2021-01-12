@@ -63,3 +63,11 @@ func (m *C2Manager) UpdateUser(u *db.User) *Response {
 	}
 	return &rtn
 }
+
+//GetUser GetUser
+func (m *C2Manager) GetUser(email string) *db.User {
+	m.Log.Debug("GetUser: ", email)
+	rtn := m.Db.GetUser(email)
+	rtn.Password = ""
+	return rtn
+}

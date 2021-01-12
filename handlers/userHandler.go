@@ -5,6 +5,7 @@ import (
 	"fmt"
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 	m "github.com/Ulbora/cocka2notesServices/managers"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
@@ -102,5 +103,28 @@ func (h *C2Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		resJSON, _ := json.Marshal(uadfl)
 		fmt.Fprint(w, string(resJSON))
+	}
+}
+
+//GetUser GetUser
+func (h *C2Handler) GetUser(w http.ResponseWriter, r *http.Request) {
+	auth := h.processAPIKeySecurity(r)
+	h.Log.Debug("GetUser authorized: ", auth)
+	h.SetContentType(w)
+	if auth {
+		vars := mux.Vars(r)
+		h.Log.Debug("vars: ", len(vars))
+		if vars != nil && len(vars) == 1 {
+			h.Log.Debug("vars: ", vars)
+			var email = vars["email"]
+			res := h.Manager.GetUser(email)
+			w.WriteHeader(http.StatusOK)
+			resJSON, _ := json.Marshal(res)
+			fmt.Fprint(w, string(resJSON))
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+	} else {
+		w.WriteHeader(http.StatusUnauthorized)
 	}
 }

@@ -65,7 +65,7 @@ type Note struct {
 type Manager interface {
 	AddUser(u *db.User) *Response
 	UpdateUser(u *db.User) *Response
-	// GetUser(email string) *db.User
+	GetUser(email string) *db.User
 	// DeleteUser(email string) *Response
 
 	AddUserToNote(nu *NoteUsers) *Response
