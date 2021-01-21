@@ -29,6 +29,7 @@ import (
 	man "github.com/Ulbora/cocka2notesServices/managers"
 	db "github.com/Ulbora/dbinterface"
 	mdb "github.com/Ulbora/dbinterface_mysql"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -137,7 +138,11 @@ func main() {
 	fmt.Println("Cocka2Services server is running on port " + port + "!")
 
 	//l.LogLevel = lg.OffLevel
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "apiKey", "Content-Type", "Origin"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 
-	http.ListenAndServe(":"+port, router)
+	http.ListenAndServe(":"+port, handlers.CORS(headersOk, originsOk, methodsOk)(router))
+	// http.ListenAndServe(":"+port, router)
 
 }
