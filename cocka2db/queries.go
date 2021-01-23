@@ -70,4 +70,8 @@ const (
 		" order by text "
 
 	deleteNoteItem = "DELETE FROM note_item WHERE id = ? "
+
+	getMailServer = "SELECT id, mail_server, secure_connection, port, debug, " +
+		" username, password, send_address " +
+		" FROM mail_server "
 )

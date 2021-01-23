@@ -58,6 +58,8 @@ type NotesDB interface {
 
 	AddNoteUser(nu *NoteUsers) bool
 	DeleteNoteUser(nu *NoteUsers) bool
+
+	GetMailServerInfo()*MailServer
 }
 
 //C2DB C2DB

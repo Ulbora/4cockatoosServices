@@ -45,7 +45,6 @@ type NoteUsers struct {
 	NoteID    int64  `json:"noteId"`
 }
 
-
 //CheckboxNoteItem CheckboxNoteItem
 type CheckboxNoteItem struct {
 	ID      int64  `json:"id"`
@@ -59,4 +58,14 @@ type NoteItem struct {
 	ID     int64  `json:"id"`
 	Text   string `json:"text"`
 	NoteID int64  `json:"noteId"`
+}
+
+//MailServer MailServer
+type MailServer struct {
+	ID          int64  `json:"id"`
+	Host        string `json:"host"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	Port        string `json:"port"`
+	SenderEmail string `json:"senderEmail"`
 }

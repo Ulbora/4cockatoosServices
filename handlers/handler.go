@@ -49,5 +49,7 @@ type Handler interface {
 	UpdateNoteItem(w http.ResponseWriter, r *http.Request)
 	DeleteNoteItem(w http.ResponseWriter, r *http.Request)
 
+	GetMailServer(w http.ResponseWriter, r *http.Request)
+
 	SetLogLevel(w http.ResponseWriter, r *http.Request)
 }

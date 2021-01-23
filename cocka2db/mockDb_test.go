@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	//dbi "github.com/Ulbora/dbinterface"
 )
 
 func TestMockC2DB_AddUser(t *testing.T) {
@@ -322,6 +321,23 @@ func TestMockC2DB_GetNoteUserList(t *testing.T) {
 
 	fu := cdb.GetNoteUserList(8, "tet@ts.com")
 	if (*fu)[0] != "test@test.com" {
+		t.Fail()
+	}
+}
+
+func TestMockC2DB_GetMailServerInfo(t *testing.T) {
+	var cdb MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var msr MailServer
+	msr.SenderEmail = "test@test.com"
+
+	cdb.MockMailServer = &msr
+
+	fu := cdb.GetMailServerInfo()
+	if fu.SenderEmail != "test@test.com" {
 		t.Fail()
 	}
 }

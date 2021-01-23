@@ -56,6 +56,8 @@ type MockC2DB struct {
 	MockAddNoteUserSuc    bool
 	MockDeleteNoteUserSuc bool
 	MockNoteUserList      *[]string
+
+	MockMailServer *MailServer
 }
 
 //GetNew GetNew
@@ -161,4 +163,9 @@ func (c *MockC2DB) GetNoteUserList(noteID int64, ownerEmail string) *[]string {
 //DeleteNoteUser DeleteNoteUser
 func (c *MockC2DB) DeleteNoteUser(nu *NoteUsers) bool {
 	return c.MockDeleteNoteUserSuc
+}
+
+//GetMailServerInfo GetMailServerInfo
+func (c *MockC2DB) GetMailServerInfo() *MailServer {
+	return c.MockMailServer
 }

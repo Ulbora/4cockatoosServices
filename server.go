@@ -134,6 +134,8 @@ func main() {
 	router.HandleFunc("/rs/item/update", h.UpdateNoteItem).Methods("PUT")
 	router.HandleFunc("/rs/item/delete/{id}", h.DeleteNoteItem).Methods("DELETE")
 
+	router.HandleFunc("/rs/mailserver/get", h.GetMailServer).Methods("GET")
+
 	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
 
 	fmt.Println("Cocka2Services server is running on port " + port + "!")

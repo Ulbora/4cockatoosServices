@@ -93,4 +93,6 @@ type Manager interface {
 	UpdateNoteItem(ni *db.NoteItem) *Response
 	//// GetNoteItemList(noteID int64) *[]db.NoteItem
 	DeleteNoteItem(id int64) *Response
+
+	GetMailServer() *db.MailServer
 }
