@@ -71,3 +71,16 @@ func (m *C2Manager) GetUser(email string) *db.User {
 	rtn.Password = ""
 	return rtn
 }
+
+//Login Login
+func (m *C2Manager) Login(email string, pw string) *LoginResponse {
+	var rtn LoginResponse
+	m.Log.Debug("GetUser: ", email)
+	usr := m.Db.GetUser(email)
+	if usr.Email != "" {
+		suc := m.ValidatePassword(pw, usr.Password)
+		rtn.Email = usr.Email
+		rtn.Success = suc
+	}
+	return &rtn
+}

@@ -3,7 +3,7 @@ package handlers
 import (
 	"bytes"
 	"fmt"
-	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +12,7 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 	m "github.com/Ulbora/cocka2notesServices/managers"
+	"github.com/gorilla/mux"
 )
 
 func TestC2Handler_AddUser(t *testing.T) {
@@ -574,6 +575,219 @@ func TestC2Handler_GetUserAuth(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h.GetUser(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 401 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_Login(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	hashedPw, err := bcrypt.GenerateFromPassword([]byte("test"), bcrypt.DefaultCost)
+	if err == nil {
+		fn.Password = string(hashedPw)
+	}
+
+	cdb.MockUser = &fn
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.Login(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_LoginAuth(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456q"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	fn.Password = "eerrt"
+
+	cdb.MockUser = &fn
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.Login(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 401 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_LoginMedia(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	fn.Password = "eerrt"
+
+	cdb.MockUser = &fn
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	//r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.Login(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 415 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_LoginReq(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	fn.Password = "eerrt"
+
+	cdb.MockUser = &fn
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", nil)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.Login(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 400 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_LoginFail(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var fn db.User
+	fn.Email = "test@test.com"
+	fn.Password = "eerrt"
+
+	cdb.MockUser = &fn
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test"}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.Login(w, r)
 
 	fmt.Println("code: ", w.Code)
 

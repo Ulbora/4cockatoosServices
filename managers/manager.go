@@ -45,6 +45,12 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+//LoginResponse LoginResponse
+type LoginResponse struct {
+	Success bool   `json:"success"`
+	Email   string `json:"email"`
+}
+
 //NoteUsers NoteUsers
 type NoteUsers struct {
 	OwnerEmail string `json:"ownerEmail"`
@@ -66,6 +72,7 @@ type Manager interface {
 	AddUser(u *db.User) *Response
 	UpdateUser(u *db.User) *Response
 	GetUser(email string) *db.User
+	Login(email string, pw string) *LoginResponse
 	// DeleteUser(email string) *Response
 
 	AddUserToNote(nu *NoteUsers) *Response

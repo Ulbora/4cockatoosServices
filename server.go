@@ -115,6 +115,7 @@ func main() {
 	router.HandleFunc("/rs/user/add", h.AddUser).Methods("POST")
 	router.HandleFunc("/rs/user/update", h.UpdateUser).Methods("PUT")
 	router.HandleFunc("/rs/user/get/{email}", h.GetUser).Methods("GET")
+	router.HandleFunc("/rs/user/login", h.Login).Methods("POST")
 
 	router.HandleFunc("/rs/note/user/add", h.AddUserToNote).Methods("POST")
 	router.HandleFunc("/rs/note/users/{noteId}/{ownerEmail}", h.GetNoteUserList).Methods("GET")

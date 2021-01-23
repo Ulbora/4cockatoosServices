@@ -130,6 +130,16 @@ github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:114.10,117.36 3 1
 github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:117.36,124.4 6 1
 github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:124.9,126.4 1 1
 github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:127.8,129.3 1 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:133.67,137.10 4 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:137.10,140.12 3 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:140.12,142.4 1 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:142.9,148.28 6 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:148.28,150.5 1 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:150.10,153.21 3 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:158.5,159.35 2 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:153.21,155.6 1 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:155.11,157.6 1 1
+github.com/Ulbora/cocka2notesServices/handlers/userHandler.go:162.8,167.3 4 1
 github.com/Ulbora/cocka2notesServices/handlers/c2handler.go:40.38,42.2 1 1
 github.com/Ulbora/cocka2notesServices/handlers/c2handler.go:45.56,48.33 3 1
 github.com/Ulbora/cocka2notesServices/handlers/c2handler.go:52.2,52.12 1 1

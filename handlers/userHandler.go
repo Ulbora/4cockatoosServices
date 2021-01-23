@@ -128,3 +128,41 @@ func (h *C2Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 	}
 }
+
+//Login Login
+func (h *C2Handler) Login(w http.ResponseWriter, r *http.Request) {
+	auth := h.processAPIKeySecurity(r)
+	h.Log.Debug("Login authorized: ", auth)
+	h.SetContentType(w)
+	if auth {
+		ucOk := h.CheckContent(r)
+		h.Log.Debug("conOk: ", ucOk)
+		if !ucOk {
+			http.Error(w, "json required", http.StatusUnsupportedMediaType)
+		} else {
+			var uReq db.User
+			usuc, uerr := h.ProcessBody(r, &uReq)
+			h.Log.Debug("usuc: ", usuc)
+			h.Log.Debug("uerr: ", uerr)
+			h.Log.Debug("userReq: ", uReq)
+			if !usuc && uerr != nil {
+				http.Error(w, uerr.Error(), http.StatusBadRequest)
+			} else {
+				ures := h.Manager.Login(uReq.Email, uReq.Password)
+				h.Log.Debug("ures: ", *ures)
+				if ures.Success {
+					w.WriteHeader(http.StatusOK)
+				} else {
+					w.WriteHeader(http.StatusUnauthorized)
+				}
+				resJSON, _ := json.Marshal(ures)
+				fmt.Fprint(w, string(resJSON))
+			}
+		}
+	} else {
+		var uadfl m.LoginResponse
+		w.WriteHeader(http.StatusUnauthorized)
+		resJSON, _ := json.Marshal(uadfl)
+		fmt.Fprint(w, string(resJSON))
+	}
+}
