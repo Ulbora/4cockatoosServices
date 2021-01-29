@@ -23,17 +23,21 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"strconv"
+
+	b64 "encoding/base64"
+
 	lg "github.com/Ulbora/Level_Logger"
 	cacka2db "github.com/Ulbora/cocka2notesServices/cocka2db"
 	hand "github.com/Ulbora/cocka2notesServices/handlers"
 	man "github.com/Ulbora/cocka2notesServices/managers"
 	db "github.com/Ulbora/dbinterface"
 	mdb "github.com/Ulbora/dbinterface_mysql"
+	ml "github.com/Ulbora/go-mail-sender"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"net/http"
-	"os"
-	"strconv"
 )
 
 func main() {
@@ -95,6 +99,22 @@ func main() {
 	c2m.Db = cdb.GetNew()
 	c2m.Log = &l
 
+	mailSrv := cdb.GetMailServerInfo()
+	l.Debug("mail server: ", *mailSrv)
+
+	var msender ml.SecureSender
+	msender.MailHost = mailSrv.Host
+	msender.User = mailSrv.Username
+	msender.Port = mailSrv.Port
+
+	if mailSrv != nil {
+		sDec, _ := b64.StdEncoding.DecodeString(mailSrv.Password)
+		msender.Password = string(sDec)
+	}
+	//l.Debug("mail sender: ", msender)
+
+	c2m.MailSender = msender.GetNew()
+
 	var sh hand.C2Handler
 	sh.Manager = c2m.GetNew()
 	sh.APIKey = apiKey
@@ -116,6 +136,7 @@ func main() {
 	router.HandleFunc("/rs/user/update", h.UpdateUser).Methods("PUT")
 	router.HandleFunc("/rs/user/get/{email}", h.GetUser).Methods("GET")
 	router.HandleFunc("/rs/user/login", h.Login).Methods("POST")
+	router.HandleFunc("/rs/user/password/reset", h.ResetPassword).Methods("PUT")
 
 	router.HandleFunc("/rs/note/user/add", h.AddUserToNote).Methods("POST")
 	router.HandleFunc("/rs/note/users/{noteId}/{ownerEmail}", h.GetNoteUserList).Methods("GET")
@@ -134,8 +155,6 @@ func main() {
 	router.HandleFunc("/rs/item/update", h.UpdateNoteItem).Methods("PUT")
 	router.HandleFunc("/rs/item/delete/{id}", h.DeleteNoteItem).Methods("DELETE")
 
-	router.HandleFunc("/rs/mailserver/get", h.GetMailServer).Methods("GET")
-
 	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
 
 	fmt.Println("Cocka2Services server is running on port " + port + "!")
@@ -143,7 +162,7 @@ func main() {
 	//l.LogLevel = lg.OffLevel
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "apiKey", "Content-Type", "Origin"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 
 	http.ListenAndServe(":"+port, handlers.CORS(headersOk, originsOk, methodsOk)(router))
 	// http.ListenAndServe(":"+port, router)

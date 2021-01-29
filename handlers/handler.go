@@ -31,6 +31,7 @@ type Handler interface {
 	UpdateUser(w http.ResponseWriter, r *http.Request)
 	GetUser(w http.ResponseWriter, r *http.Request)
 	Login(w http.ResponseWriter, r *http.Request)
+	ResetPassword(w http.ResponseWriter, r *http.Request)
 
 	AddUserToNote(w http.ResponseWriter, r *http.Request)
 	GetNoteUserList(w http.ResponseWriter, r *http.Request)
@@ -48,8 +49,6 @@ type Handler interface {
 	AddNoteItem(w http.ResponseWriter, r *http.Request)
 	UpdateNoteItem(w http.ResponseWriter, r *http.Request)
 	DeleteNoteItem(w http.ResponseWriter, r *http.Request)
-
-	GetMailServer(w http.ResponseWriter, r *http.Request)
 
 	SetLogLevel(w http.ResponseWriter, r *http.Request)
 }

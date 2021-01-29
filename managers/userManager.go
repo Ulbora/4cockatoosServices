@@ -1,7 +1,11 @@
 package managers
 
 import (
+	"math/rand"
+	"time"
+
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
+	ml "github.com/Ulbora/go-mail-sender"
 )
 
 /*
@@ -83,4 +87,40 @@ func (m *C2Manager) Login(email string, pw string) *LoginResponse {
 		rtn.Success = suc
 	}
 	return &rtn
+}
+
+//ResetPassword ResetPassword
+func (m *C2Manager) ResetPassword(toEmail string) *Response {
+	m.Log.Debug("ResetPassword and send email ")
+	var rtn Response
+	newPw := m.randStringRunes(15)
+	ms := m.Db.GetMailServerInfo()
+	//usr := m.Db.GetUser(toEmail)
+	var usr db.User
+	usr.Email = toEmail
+	usr.Password = newPw
+	ures := m.UpdateUser(&usr)
+	if ures.Success {
+		var pwMail ml.Mailer
+		pwMail.Subject = "Password Reset"
+		pwMail.Body = "Your new password is: " + newPw
+		pwMail.Recipients = []string{toEmail}
+		pwMail.SenderAddress = ms.SenderEmail
+		m.Log.Debug("Mailer : ", pwMail)
+		sendSuc := m.MailSender.SendMail(&pwMail)
+		m.Log.Debug("sendSuc  to user: ", sendSuc)
+		rtn.Success = sendSuc
+	}
+	return &rtn
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func (m *C2Manager) randStringRunes(n int) string {
+	rand.Seed(time.Now().UnixNano())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

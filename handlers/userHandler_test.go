@@ -3,7 +3,6 @@ package handlers
 import (
 	"bytes"
 	"fmt"
-	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -12,7 +11,9 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 	m "github.com/Ulbora/cocka2notesServices/managers"
+	ml "github.com/Ulbora/go-mail-sender"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func TestC2Handler_AddUser(t *testing.T) {
@@ -792,6 +793,286 @@ func TestC2Handler_LoginFail(t *testing.T) {
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 401 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_ResetPassword(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var u db.User
+	u.Email = "test@test.com"
+	cdb.MockUser = &u
+	cdb.MockUpdateUserSuc = true
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test", "webEnabled": true}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.ResetPassword(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_ResetPasswordMedia(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var u db.User
+	u.Email = "test@test.com"
+	cdb.MockUser = &u
+	cdb.MockUpdateUserSuc = true
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test", "webEnabled": true}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	//r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.ResetPassword(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 415 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_ResetPasswordReq(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var u db.User
+	u.Email = "test@test.com"
+	cdb.MockUser = &u
+	cdb.MockUpdateUserSuc = true
+
+	h := sh.GetNew()
+	//aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test", "webEnabled": true}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", nil)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.ResetPassword(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 400 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_ResetPasswordAuth(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456q"
+	sh.Log = &l
+
+	var u db.User
+	u.Email = "test@test.com"
+	cdb.MockUser = &u
+	cdb.MockUpdateUserSuc = true
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test", "webEnabled": true}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.ResetPassword(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 401 {
+		t.Fail()
+	}
+}
+
+func TestC2Handler_ResetPasswordFail(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m m.C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	var sh C2Handler
+	sh.Manager = m
+	sh.APIKey = "123456"
+	sh.Log = &l
+
+	var u db.User
+	u.Email = "test@test.com"
+	cdb.MockUser = &u
+	cdb.MockUpdateUserSuc = false
+
+	h := sh.GetNew()
+	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"email":"test@test.com", "password": "test", "webEnabled": true}`))
+	//aJSON, _ := json.Marshal(robj)
+	//fmt.Println("aJSON: ", aJSON)
+	r, _ := http.NewRequest("POST", "/ffllist", aJSON)
+	r.Header.Set("storeName", "TestStore")
+	r.Header.Set("localDomain", "test.domain")
+	r.Header.Set("Content-Type", "application/json")
+	r.Header.Set("apiKey", "123456")
+	w := httptest.NewRecorder()
+
+	h.ResetPassword(w, r)
+
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 500 {
 		t.Fail()
 	}
 }

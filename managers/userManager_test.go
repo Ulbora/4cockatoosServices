@@ -7,6 +7,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
+	ml "github.com/Ulbora/go-mail-sender"
 )
 
 func TestC2Manager_AddUser(t *testing.T) {
@@ -107,4 +108,49 @@ func TestC2Manager_Login(t *testing.T) {
 	if res.Email != "test@test.com" || !res.Success {
 		t.Fail()
 	}
+}
+
+func TestC2Manager_randStringRunes(t *testing.T) {
+
+	var c2m C2Manager
+
+	pw := c2m.randStringRunes(15)
+	fmt.Println("new pw:", pw)
+	if pw == "" {
+		t.Fail()
+	}
+}
+
+func TestC2Manager_ResetPassword(t *testing.T) {
+	var cdb db.MockC2DB
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	cdb.Log = &l
+
+	var c2m C2Manager
+	c2m.Db = &cdb
+	c2m.Log = &l
+	m := c2m.GetNew()
+
+	var n db.MailServer
+	n.ID = 5
+	n.SenderEmail = "test@test.com"
+	n.Password = "dGVzdGVy"
+
+	cdb.MockMailServer = &n
+	cdb.MockUpdateUserSuc = true
+	var mkusr db.User
+	mkusr.Email = "test@test.com"
+	cdb.MockUser = &mkusr
+
+	var msender ml.MockSecureSender
+	msender.MockSuccess = true
+	c2m.MailSender = msender.GetNew()
+
+	res := m.ResetPassword("test@test.com")
+
+	if !res.Success {
+		t.Fail()
+	}
+
 }

@@ -24,13 +24,15 @@ package managers
 import (
 	lg "github.com/Ulbora/Level_Logger"
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
+	ml "github.com/Ulbora/go-mail-sender"
 	"golang.org/x/crypto/bcrypt"
 )
 
 //C2Manager C2Manager
 type C2Manager struct {
-	Db  db.NotesDB
-	Log *lg.Logger
+	Db         db.NotesDB
+	Log        *lg.Logger
+	MailSender ml.Sender
 }
 
 //GetNew GetNew

@@ -73,6 +73,7 @@ type Manager interface {
 	UpdateUser(u *db.User) *Response
 	GetUser(email string) *db.User
 	Login(email string, pw string) *LoginResponse
+	ResetPassword(toEmail string) *Response
 	// DeleteUser(email string) *Response
 
 	AddUserToNote(nu *NoteUsers) *Response
@@ -93,6 +94,4 @@ type Manager interface {
 	UpdateNoteItem(ni *db.NoteItem) *Response
 	//// GetNoteItemList(noteID int64) *[]db.NoteItem
 	DeleteNoteItem(id int64) *Response
-
-	GetMailServer() *db.MailServer
 }
