@@ -22,6 +22,8 @@ package managers
 */
 
 import (
+	"time"
+
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 )
 
@@ -65,6 +67,7 @@ type Note struct {
 	Type       string      `json:"type"`
 	OwnerEmail string      `json:"ownerEmail"`
 	NoteItems  interface{} `json:"noteItems"`
+	LastUsed   time.Time   `json:"lastUsed"`
 }
 
 //Manager Manager
@@ -82,7 +85,7 @@ type Manager interface {
 	AddNote(n *db.Note) *ResponseID
 	UpdateNote(n *db.Note) *Response
 	GetNote(id int64) *Note
-	GetUsersNotes(email string) *[]db.Note
+	GetUsersNotes(email string) *[]*Note
 	DeleteNote(id int64, ownerEmail string) *Response
 
 	AddCheckboxItem(ni *db.CheckboxNoteItem) *ResponseID

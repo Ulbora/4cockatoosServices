@@ -3,11 +3,12 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+
 	db "github.com/Ulbora/cocka2notesServices/cocka2db"
 	m "github.com/Ulbora/cocka2notesServices/managers"
 	"github.com/gorilla/mux"
-	"net/http"
-	"strconv"
 )
 
 /*
@@ -152,7 +153,7 @@ func (h *C2Handler) GetUsersNotes(w http.ResponseWriter, r *http.Request) {
 		if vars != nil && len(vars) == 1 {
 			h.Log.Debug("vars: ", vars)
 			var email = vars["email"]
-			var res *[]db.Note
+			var res *[]*m.Note
 			res = h.Manager.GetUsersNotes(email)
 			h.Log.Debug("res: ", res)
 			w.WriteHeader(http.StatusOK)

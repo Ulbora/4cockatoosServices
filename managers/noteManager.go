@@ -57,9 +57,27 @@ func (m *C2Manager) UpdateNote(n *db.Note) *Response {
 }
 
 //GetUsersNotes GetUsersNotes
-func (m *C2Manager) GetUsersNotes(email string) *[]db.Note {
+func (m *C2Manager) GetUsersNotes(email string) *[]*Note { //*[]db.Note
+	var rtn []*Note
 	m.Log.Debug("GetUsersNotes: ", email)
-	return m.Db.GetUsersNotes(email)
+	nlist := m.Db.GetUsersNotes(email)
+	for _, n := range *nlist {
+		var nn Note
+		nn.ID = n.ID
+		nn.OwnerEmail = n.OwnerEmail
+		nn.Title = n.Title
+		nn.Type = n.Type
+		nn.LastUsed = n.LastUsed
+		if n.Type == noteTypeCheckbox {
+			ni := m.Db.GetCheckboxItemList(n.ID)
+			nn.NoteItems = ni
+		} else if n.Type == notetypeNote {
+			ni := m.Db.GetNoteItemList(n.ID)
+			nn.NoteItems = ni
+		}
+		rtn = append(rtn, &nn)
+	}
+	return &rtn
 }
 
 //GetNote GetNote

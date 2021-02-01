@@ -87,7 +87,7 @@ func TestC2Manager_GetUsersNotes(t *testing.T) {
 	en.ID = 6
 	en.OwnerEmail = "test@test.com"
 	en.Title = "TEST"
-	en.Type = "checkbox"
+	en.Type = "note"
 
 	var nlst []db.Note
 	nlst = append(nlst, n)
