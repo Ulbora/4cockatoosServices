@@ -70,10 +70,14 @@ func (m *C2Manager) GetUsersNotes(email string) *[]*Note { //*[]db.Note
 		nn.LastUsed = n.LastUsed
 		if n.Type == noteTypeCheckbox {
 			ni := m.Db.GetCheckboxItemList(n.ID)
-			nn.NoteItems = ni
+			if ni != nil {
+				nn.NoteCheckboxItems = *ni
+			}
 		} else if n.Type == notetypeNote {
 			ni := m.Db.GetNoteItemList(n.ID)
-			nn.NoteItems = ni
+			if ni != nil {
+				nn.NoteTextItems = *ni
+			}
 		}
 		rtn = append(rtn, &nn)
 	}
@@ -91,10 +95,10 @@ func (m *C2Manager) GetNote(id int64) *Note {
 
 	if n.Type == noteTypeCheckbox {
 		ni := m.Db.GetCheckboxItemList(id)
-		rtn.NoteItems = ni
+		rtn.NoteCheckboxItems = *ni
 	} else if n.Type == notetypeNote {
 		ni := m.Db.GetNoteItemList(id)
-		rtn.NoteItems = ni
+		rtn.NoteTextItems = *ni
 	}
 	return &rtn
 }

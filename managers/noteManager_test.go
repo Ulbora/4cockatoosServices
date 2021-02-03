@@ -82,12 +82,17 @@ func TestC2Manager_GetUsersNotes(t *testing.T) {
 	n.OwnerEmail = "test@test.com"
 	n.Title = "TEST2"
 	n.Type = "checkbox"
+	var cblst []db.CheckboxNoteItem
+	cdb.MockCheckboxNoteItemList = &cblst
 
 	var en db.Note
 	en.ID = 6
 	en.OwnerEmail = "test@test.com"
 	en.Title = "TEST"
 	en.Type = "note"
+
+	var nilst []db.NoteItem
+	cdb.MockNoteItemList = &nilst
 
 	var nlst []db.Note
 	nlst = append(nlst, n)
@@ -168,8 +173,8 @@ func TestC2Manager_GetCheckboxNote(t *testing.T) {
 
 	res := m.GetNote(5)
 	fmt.Println("note: ", *res)
-	ni := res.NoteItems
-	fmt.Println("note items: ", ni.(*[]db.CheckboxNoteItem))
+	ni := res.NoteCheckboxItems
+	fmt.Println("note items: ", ni)
 	if res.ID != 5 {
 		t.Fail()
 	}
@@ -212,8 +217,8 @@ func TestC2Manager_GetNote(t *testing.T) {
 
 	res := m.GetNote(5)
 	fmt.Println("note: ", *res)
-	ni := res.NoteItems
-	fmt.Println("note items: ", ni.(*[]db.NoteItem))
+	ni := res.NoteTextItems
+	fmt.Println("note items: ", ni)
 	if res.ID != 5 {
 		t.Fail()
 	}

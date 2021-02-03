@@ -62,12 +62,14 @@ type NoteUsers struct {
 
 //Note Note
 type Note struct {
-	ID         int64       `json:"id"`
-	Title      string      `json:"title"`
-	Type       string      `json:"type"`
-	OwnerEmail string      `json:"ownerEmail"`
-	NoteItems  interface{} `json:"noteItems"`
-	LastUsed   time.Time   `json:"lastUsed"`
+	ID         int64  `json:"id"`
+	Title      string `json:"title"`
+	Type       string `json:"type"`
+	OwnerEmail string `json:"ownerEmail"`
+	//NoteItems         interface{} `json:"noteItems"`
+	NoteTextItems     []db.NoteItem         `json:"noteTextItems"`
+	NoteCheckboxItems []db.CheckboxNoteItem `json:"noteCheckboxItems"`
+	LastUsed          time.Time             `json:"lastUsed"`
 }
 
 //Manager Manager
