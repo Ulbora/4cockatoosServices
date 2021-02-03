@@ -94,6 +94,7 @@ func (m *C2Manager) ResetPassword(toEmail string) *Response {
 	m.Log.Debug("ResetPassword and send email ")
 	var rtn Response
 	newPw := m.randStringRunes(15)
+	m.Log.Debug("New Password : ", newPw)
 	ms := m.Db.GetMailServerInfo()
 	//usr := m.Db.GetUser(toEmail)
 	var usr db.User
