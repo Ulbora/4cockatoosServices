@@ -159,7 +159,7 @@ func main() {
 
 	fmt.Println("Cocka2Services server is running on port " + port + "!")
 
-	//l.LogLevel = lg.OffLevel
+	l.LogLevel = lg.OffLevel
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "apiKey", "Content-Type", "Origin"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
